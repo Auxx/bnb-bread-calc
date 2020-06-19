@@ -29,9 +29,9 @@ export class SimpleStageBuilder {
 
   build(): SimpleStageFormula {
     return {
-      flour: this.flourList,
-      hydration: this.hydrationList,
-      other: this.otherList
+      flour: this.flourList.map(i => ({ ...i })),
+      hydration: this.hydrationList.map(i => ({ ...i })),
+      other: this.otherList.map(i => ({ ...i }))
     };
   }
 
