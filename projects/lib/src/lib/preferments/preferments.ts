@@ -2,6 +2,8 @@ export interface PrefermentFormula {
   starterHydration: number;
   outputHydration: number;
   flourRatio: number;
+
+  flour?: string;
 }
 
 export interface PrefermentWeights {
@@ -17,6 +19,8 @@ export interface PrefermentComposition {
   starterHydration: number;
   freshFlour: number;
   freshHydration: number;
+
+  flour?: string;
 }
 
 export function translatePrefermentPercentages(formula: PrefermentFormula): PrefermentFormula {
@@ -59,7 +63,6 @@ export function calculatePrefermentComposition(formula: PrefermentFormula): Pref
   const starterHydration = ratios.starter - starterFlour;
 
   const freshFlour = starterFlour * formula.flourRatio;
-
   const totalFlour = freshFlour + starterFlour;
 
   return {
@@ -70,6 +73,8 @@ export function calculatePrefermentComposition(formula: PrefermentFormula): Pref
     starterHydration: starterHydration / totalFlour,
 
     freshFlour: freshFlour / totalFlour,
-    freshHydration: formula.outputHydration - starterHydration / totalFlour
+    freshHydration: formula.outputHydration - starterHydration / totalFlour,
+
+    flour: formula.flour
   };
 }
