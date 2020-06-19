@@ -39,8 +39,6 @@ describe('preferments.ts', () => {
       expect(result.starter).toBe(25);
       expect(result.flour).toBe(50);
       expect(result.water).toBe(45);
-
-      console.log(calculatePrefermentWeights({ starterHydration: 1, outputHydration: 1, flourRatio: 2 }, 1));
     });
   });
 

@@ -2,4 +2,4 @@
  * Public API Surface of lib
  */
 
-export * from './lib/preferments';
+export * from './lib/preferments/preferments';
