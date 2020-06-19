@@ -1,6 +1,7 @@
 import { SimpleStageElement, SimpleStageFormula } from './simple-stage.types';
 
 // TODO Add stage reference support
+// TODO Add building from existing SimpleStageFormula
 export class SimpleStageBuilder {
   private readonly flourList: SimpleStageElement[] = [];
 
