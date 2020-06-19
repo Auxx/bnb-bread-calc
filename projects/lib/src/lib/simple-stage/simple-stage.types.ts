@@ -8,3 +8,9 @@ export interface SimpleStageFormula {
   hydration: SimpleStageElement[];
   other: SimpleStageElement[];
 }
+
+export interface SimpleStageComposition {
+  flour: number;
+  hydration: number;
+  other: number;
+}
