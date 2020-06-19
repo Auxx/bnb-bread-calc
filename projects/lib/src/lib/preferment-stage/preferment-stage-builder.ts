@@ -7,8 +7,14 @@ export class PrefermentStageBuilder {
     flourRatio: 2
   };
 
-  static start() {
-    return new PrefermentStageBuilder();
+  constructor(formula: PrefermentFormula = null) {
+    if (formula !== null) {
+      Object.assign(this.formula, formula);
+    }
+  }
+
+  static start(formula: PrefermentFormula = null) {
+    return new PrefermentStageBuilder(formula);
   }
 
   starterHydration(value: number) {
