@@ -1,8 +1,8 @@
-import { PrefermentsBuilder } from './preferments-builder';
+import { PrefermentStageBuilder } from './preferment-stage-builder';
 
-describe('PrefermentsBuilder', () => {
+describe('PrefermentStageBuilder', () => {
   it('should build pre-ferment formula', () => {
-    const result = PrefermentsBuilder.start()
+    const result = PrefermentStageBuilder.start()
       .starterHydration(1.5)
       .outputHydration(1)
       .flourRatio(9)
@@ -15,7 +15,7 @@ describe('PrefermentsBuilder', () => {
   });
 
   it('should replace same values', () => {
-    const result = PrefermentsBuilder.start()
+    const result = PrefermentStageBuilder.start()
       .flour('wheat')
       .starterHydration(1.5)
       .outputHydration(1)

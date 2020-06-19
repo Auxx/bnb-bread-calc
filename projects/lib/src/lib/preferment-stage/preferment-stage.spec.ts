@@ -3,9 +3,9 @@ import {
   calculatePrefermentWeights,
   translatePrefermentPercentages,
   translatePrefermentRatios
-} from './preferments';
+} from './preferment-stage';
 
-describe('preferments.ts', () => {
+describe('ppreferment-stage.ts', () => {
   describe('translatePrefermentPercentages', () => {
     it('should translate percentage values to ratios', () => {
       const result = translatePrefermentPercentages({ starterHydration: 125, outputHydration: 80, flourRatio: 9 });

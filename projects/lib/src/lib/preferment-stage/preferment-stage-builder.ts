@@ -1,6 +1,6 @@
-import { PrefermentFormula } from './preferments.types';
+import { PrefermentFormula } from './preferment-stage.types';
 
-export class PrefermentsBuilder {
+export class PrefermentStageBuilder {
   private readonly formula: PrefermentFormula = {
     starterHydration: 1,
     outputHydration: 1,
@@ -8,7 +8,7 @@ export class PrefermentsBuilder {
   };
 
   static start() {
-    return new PrefermentsBuilder();
+    return new PrefermentStageBuilder();
   }
 
   starterHydration(value: number) {
