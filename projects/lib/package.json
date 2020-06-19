@@ -1,0 +1,9 @@
+{
+  "name": "bnb-bread-calc",
+  "version": "0.0.1",
+  "peerDependencies": {
+  },
+  "dependencies": {
+    "tslib": "^1.10.0"
+  }
+}
