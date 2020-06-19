@@ -1,4 +1,9 @@
-import { calculatePrefermentWeights, translatePrefermentPercentages, translatePrefermentRatios } from './preferments';
+import {
+  calculatePrefermentComposition,
+  calculatePrefermentWeights,
+  translatePrefermentPercentages,
+  translatePrefermentRatios
+} from './preferments';
 
 describe('preferments.ts', () => {
   describe('translatePrefermentPercentages', () => {
@@ -34,6 +39,25 @@ describe('preferments.ts', () => {
       expect(result.starter).toBe(25);
       expect(result.flour).toBe(50);
       expect(result.water).toBe(45);
+
+      console.log(calculatePrefermentWeights({ starterHydration: 1, outputHydration: 1, flourRatio: 2 }, 1));
+    });
+  });
+
+  describe('calculatePrefermentComposition', () => {
+    function expectations(formula) {
+      const result = calculatePrefermentComposition(formula);
+
+      expect(result.totalFlour).toBe(1);
+      expect(result.totalHydration).toBe(formula.outputHydration);
+      expect(result.freshFlour + result.starterFlour).toBe(1);
+      expect(result.freshFlour / result.starterFlour).toBe(formula.flourRatio);
+      expect(result.freshHydration + result.starterHydration).toBe(formula.outputHydration);
+    }
+
+    it('should calculate preferment composition', () => {
+      expectations({ starterHydration: 1, outputHydration: 1, flourRatio: 4 });
+      expectations({ starterHydration: 1.5, outputHydration: 1, flourRatio: 9 });
     });
   });
 });
