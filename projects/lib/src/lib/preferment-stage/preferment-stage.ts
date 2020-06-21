@@ -1,4 +1,4 @@
-import { PrefermentComposition, PrefermentFormula, PrefermentWeights } from './preferments.types';
+import { PrefermentComposition, PrefermentFormula, PrefermentWeights } from './preferment-stage.types';
 
 export function translatePrefermentPercentages(formula: PrefermentFormula): PrefermentFormula {
   return {
