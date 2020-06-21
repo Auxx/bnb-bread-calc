@@ -2,17 +2,17 @@ import { PrefermentComposition, PrefermentFormula, PrefermentWeights } from './p
 
 export function translatePrefermentPercentages(formula: PrefermentFormula): PrefermentFormula {
   return {
+    ...formula,
     starterHydration: formula.starterHydration / 100,
-    outputHydration: formula.outputHydration / 100,
-    flourRatio: formula.flourRatio
+    outputHydration: formula.outputHydration / 100
   };
 }
 
 export function translatePrefermentRatios(formula: PrefermentFormula): PrefermentFormula {
   return {
+    ...formula,
     starterHydration: formula.starterHydration * 100,
-    outputHydration: formula.outputHydration * 100,
-    flourRatio: formula.flourRatio
+    outputHydration: formula.outputHydration * 100
   };
 }
 
@@ -43,14 +43,14 @@ export function calculatePrefermentComposition(formula: PrefermentFormula): Pref
   const totalFlour = freshFlour + starterFlour;
 
   return {
-    totalFlour: 1,
-    totalHydration: formula.outputHydration,
+    totalFlour: 1 * formula.prefermentedAmount,
+    totalHydration: formula.outputHydration * formula.prefermentedAmount,
 
-    starterFlour: starterFlour / totalFlour,
-    starterHydration: starterHydration / totalFlour,
+    starterFlour: (starterFlour / totalFlour) * formula.prefermentedAmount,
+    starterHydration: (starterHydration / totalFlour) * formula.prefermentedAmount,
 
-    freshFlour: freshFlour / totalFlour,
-    freshHydration: formula.outputHydration - starterHydration / totalFlour,
+    freshFlour: (freshFlour / totalFlour) * formula.prefermentedAmount,
+    freshHydration: (formula.outputHydration - starterHydration / totalFlour) * formula.prefermentedAmount,
 
     flour: formula.flour
   };

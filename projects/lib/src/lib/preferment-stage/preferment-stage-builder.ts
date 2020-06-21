@@ -4,7 +4,8 @@ export class PrefermentStageBuilder {
   private readonly formula: PrefermentFormula = {
     starterHydration: 1,
     outputHydration: 1,
-    flourRatio: 2
+    flourRatio: 2,
+    prefermentedAmount: 1
   };
 
   constructor(formula: PrefermentFormula = null) {
@@ -34,6 +35,11 @@ export class PrefermentStageBuilder {
 
   flour(value: string) {
     this.formula.flour = value;
+    return this;
+  }
+
+  prefermentedAmount(value: number) {
+    this.formula.prefermentedAmount = value;
     return this;
   }
 

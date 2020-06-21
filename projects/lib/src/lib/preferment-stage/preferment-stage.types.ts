@@ -2,6 +2,7 @@ export interface PrefermentFormula {
   starterHydration: number;
   outputHydration: number;
   flourRatio: number;
+  prefermentedAmount: number;
 
   flour?: string;
 }

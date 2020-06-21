@@ -12,6 +12,7 @@ describe('PrefermentStageBuilder', () => {
     expect(result.outputHydration).toBe(1);
     expect(result.flourRatio).toBe(9);
     expect(result.flour).toBeUndefined();
+    expect(result.prefermentedAmount).toBe(1);
   });
 
   it('should replace same values', () => {
@@ -24,11 +25,13 @@ describe('PrefermentStageBuilder', () => {
       .flourRatio(5)
       .outputHydration(0.8)
       .flour('rye')
+      .prefermentedAmount(2)
       .build();
 
     expect(result.starterHydration).toBe(2);
     expect(result.outputHydration).toBe(0.8);
     expect(result.flourRatio).toBe(5);
     expect(result.flour).toBe('rye');
+    expect(result.prefermentedAmount).toBe(2);
   });
 });
