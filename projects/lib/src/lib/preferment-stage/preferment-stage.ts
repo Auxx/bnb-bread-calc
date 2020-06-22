@@ -32,6 +32,10 @@ export function calculatePrefermentWeights(formula: PrefermentFormula, requiredW
   };
 }
 
+export function calculatePrefermentWeightsForFlour(formula: PrefermentFormula, requiredWeight: number): PrefermentWeights {
+  return calculatePrefermentWeights(formula, requiredWeight + (requiredWeight * formula.outputHydration));
+}
+
 export function calculatePrefermentComposition(formula: PrefermentFormula): PrefermentComposition {
   const ratios = calculatePrefermentWeights(formula, 1);
 

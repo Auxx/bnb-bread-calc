@@ -1,6 +1,7 @@
 import {
   calculatePrefermentComposition,
   calculatePrefermentWeights,
+  calculatePrefermentWeightsForFlour,
   translatePrefermentPercentages,
   translatePrefermentRatios
 } from './preferment-stage';
@@ -40,6 +41,33 @@ describe('ppreferment-stage.ts', () => {
       expect(result.starter).toBe(25);
       expect(result.flour).toBe(50);
       expect(result.water).toBe(45);
+    });
+  });
+
+  describe('calculatePrefermentWeightsForFlour', () => {
+    it('should calculate weights correctly', () => {
+      let result = calculatePrefermentWeightsForFlour({
+        starterHydration: 1,
+        outputHydration: 1,
+        flourRatio: 2,
+        prefermentedAmount: 1
+      }, 45);
+
+      expect(result.starter).toBe(30);
+      expect(result.flour).toBe(30);
+      expect(result.water).toBe(30);
+
+      result = calculatePrefermentWeightsForFlour({
+          starterHydration: 1.5,
+          outputHydration: 0.8,
+          flourRatio: 5,
+          prefermentedAmount: 1
+        },
+        120);
+
+      expect(result.starter).toBe(50);
+      expect(result.flour).toBe(100);
+      expect(result.water).toBe(66);
     });
   });
 
