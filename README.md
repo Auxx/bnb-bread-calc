@@ -1,27 +1,70 @@
-# BnbBreadCalc
+# bnb-bread-calc
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.9.
+TypeScript/JavaScript library to calculate baker's percentages.
 
-## Development server
+`bnb-bread-calc` is using builder pattern heavily as it is designed for streaming data parsers.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Preferment Stage
 
-## Code scaffolding
+Preferments are used in bread production to increase population of yeast and bacteria, as well as
+to improve flour properties before mixing the final dough. Most common preferments are sourdough, biga and poolish.
+Preferment related functions and data structure are designed specifically for sourdough preferments. Such preferments
+require a starter culture, which is usually composed from water and flour. Then additional flour and water are added.
+This leads to a situation when such preferments contain two sources of flour and two sources of water, yet only three
+ingredients are listed overall.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### PrefermentStageBuilder
 
-## Build
+Use this builder to create `PrefermentFormula` from streaming data.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+#### `constructor(formula: PrefermentFormula = null)`
 
-## Running unit tests
+Creates a new builder, either empty or from existing `PrefermentFormula`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+#### `static start(formula: PrefermentFormula = null): PrefermentStageBuilder`
 
-## Running end-to-end tests
+Same as `constructor`, but in a `static` fashion.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+#### `starterHydration(value: number): PrefermentStageBuilder`
 
-## Further help
+Sets initial starter hydration as a decimal number, 1 meaning 100%. Usually starter hydration varies
+from 50% (0.5) to 200% (2) with the most common starter hydration being 100% (1).
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+#### `outputHydration(value: number): PrefermentStageBuilder`
+
+Sets target hydration of a preferment as a decimal number.
+
+#### `flourRatio(value: number): PrefermentStageBuilder`
+
+Sets the ratio between fresh flour to flour in the starter. For example, passing 2 means that there should two times
+more fresh flour than is available in the starter.
+
+#### `flour(value: string): PrefermentStageBuilder`
+
+Sets the name/ID of flour used in preferment. If starter and fresh flour are different, use fresh flour name/ID.
+
+#### `prefermentedAmount(value: number): PrefermentStageBuilder`
+
+Sets the amount of flour that should be prefermented in decimal number without unit.
+
+#### `build(): PrefermentFormula`
+
+Returns `PrefermentFormula` based on specified values.
+
+#### Example
+
+```typescript
+const prefermentFormula = PrefermentStageBuilder.start()
+  .starterHydration(1.5)
+  .outputHydration(1)
+  .flourRatio(9)
+  .build();
+
+// Output
+{
+  starterHydration: 1.5,
+  outputHydration: 1,
+  flourRatio: 9,
+  prefermentedAmount: 1
+}
+```
