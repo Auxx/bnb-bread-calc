@@ -1,4 +1,4 @@
-import { SimpleStageElement, SimpleStageFormula } from './simple-stage.types';
+import { SimpleStageBuilderOptions, SimpleStageElement, SimpleStageFormula } from './simple-stage.types';
 
 // TODO Add stage reference support
 // TODO Add building from existing SimpleStageFormula
@@ -9,22 +9,29 @@ export class SimpleStageBuilder {
 
   private readonly otherList: SimpleStageElement[] = [];
 
+  private readonly stageList: SimpleStageElement[] = [];
+
   static start() {
     return new SimpleStageBuilder();
   }
 
-  flour(id: string, ratio: number, combineOrReplace = true) {
-    this.addElement(this.flourList, id, ratio, combineOrReplace);
+  flour(id: string, ratio: number, options: SimpleStageBuilderOptions = { combineWithExisting: true }) {
+    this.addElement(this.flourList, id, ratio, options);
     return this;
   }
 
-  hydration(id: string, ratio: number, combineOrReplace = true) {
-    this.addElement(this.hydrationList, id, ratio, combineOrReplace);
+  hydration(id: string, ratio: number, options: SimpleStageBuilderOptions = { combineWithExisting: true }) {
+    this.addElement(this.hydrationList, id, ratio, options);
     return this;
   }
 
-  other(id: string, ratio: number, combineOrReplace = true) {
-    this.addElement(this.otherList, id, ratio, combineOrReplace);
+  other(id: string, ratio: number, options: SimpleStageBuilderOptions = { combineWithExisting: true }) {
+    this.addElement(this.otherList, id, ratio, options);
+    return this;
+  }
+
+  stage(id: string, ratio: number, options: SimpleStageBuilderOptions = { combineWithExisting: true }) {
+    this.addElement(this.stageList, id, ratio, options);
     return this;
   }
 
@@ -32,17 +39,18 @@ export class SimpleStageBuilder {
     return {
       flour: this.flourList.map(i => ({ ...i })),
       hydration: this.hydrationList.map(i => ({ ...i })),
-      other: this.otherList.map(i => ({ ...i }))
+      other: this.otherList.map(i => ({ ...i })),
+      stages: this.stageList.map(i => ({ ...i }))
     };
   }
 
-  private addElement(list: SimpleStageElement[], id: string, ratio: number, combineOrReplace: boolean) {
+  private addElement(list: SimpleStageElement[], id: string, ratio: number, options: SimpleStageBuilderOptions) {
     const existing = list.find(i => i.id === id);
 
     if (existing === undefined) {
       list.push({ id, ratio });
     } else {
-      existing.ratio = combineOrReplace ? existing.ratio + ratio : ratio;
+      existing.ratio = options.combineWithExisting ? existing.ratio + ratio : ratio;
     }
   }
 }
