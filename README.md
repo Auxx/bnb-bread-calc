@@ -1,5 +1,7 @@
 # bnb-bread-calc
 
+[![Build Status](https://travis-ci.org/Auxx/bnb-bread-calc.svg?branch=master)](https://travis-ci.org/Auxx/bnb-bread-calc)
+
 TypeScript/JavaScript library to calculate baker's percentages.
 
 `bnb-bread-calc` is using builder pattern heavily as it is designed for streaming data parsers.
