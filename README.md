@@ -15,6 +15,59 @@ require a starter culture, which is usually composed from water and flour. Then 
 This leads to a situation when such preferments contain two sources of flour and two sources of water, yet only three
 ingredients are listed overall.
 
+### PrefermentFormula
+
+Describes a preferment formula. Refer to [PrefermentStageBuilder](#prefermentstagebuilder) for description of fields.
+
+```typescript
+export interface PrefermentFormula {
+  starterHydration: number;
+  outputHydration: number;
+  flourRatio: number;
+  prefermentedAmount: number;
+
+  flour?: string;
+}
+```
+
+### PrefermentWeights
+
+Describes preferment main ingredients and their respective ratios.
+
+```typescript
+export interface PrefermentWeights {
+  starter: number;
+  flour: number;
+  water: number;
+}
+```
+
+### PrefermentComposition
+
+Breakdown of a preferment by flour, hydration and relation between all ingredients.
+
+```typescript
+export interface PrefermentComposition {
+  // Total amount of flour in a preferment
+  totalFlour: number;
+  // Total amount of water in a preferment
+  totalHydration: number;
+  
+  // Amount of flour in a starter
+  starterFlour: number;
+  // Amount of water in a starter
+  starterHydration: number;
+
+  // Amount of fresh flour
+  freshFlour: number;
+  // Amount of fresh water
+  freshHydration: number;
+
+  // Flour used to create preferment
+  flour?: string;
+}
+```
+
 ### PrefermentStageBuilder
 
 Use this builder to create `PrefermentFormula` from streaming data.
