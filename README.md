@@ -170,10 +170,25 @@ hydration levels.
 const result = calculatePrefermentWeights({ starterHydration: 1, outputHydration: 1, flourRatio: 4 }, 90);
 
 // Output
-
 {
   starter: 18,
   flour: 36,
   water: 36
+}
+```
+
+#### `calculatePrefermentWeightsForFlour(formula: PrefermentFormula, requiredWeight: number): PrefermentWeights`
+
+Calculates weight of ingredients to create a required preferment based on total flour weight needed.
+This is helpful in recipes when a specific amount of flour needs to be prefermented inside a levain.
+
+```typescript
+const result = calculatePrefermentWeightsForFlour({ starterHydration: 1, outputHydration: 1, flourRatio: 2 }, 45);
+
+// Output
+{
+  starter: 30,
+  flour: 30,
+  water: 30
 }
 ```
