@@ -49,8 +49,7 @@ describe('ppreferment-stage.ts', () => {
       let result = calculatePrefermentWeightsForFlour({
         starterHydration: 1,
         outputHydration: 1,
-        flourRatio: 2,
-        prefermentedAmount: 1
+        flourRatio: 2
       }, 45);
 
       expect(result.starter).toBe(30);
@@ -58,12 +57,10 @@ describe('ppreferment-stage.ts', () => {
       expect(result.water).toBe(30);
 
       result = calculatePrefermentWeightsForFlour({
-          starterHydration: 1.5,
-          outputHydration: 0.8,
-          flourRatio: 5,
-          prefermentedAmount: 1
-        },
-        120);
+        starterHydration: 1.5,
+        outputHydration: 0.8,
+        flourRatio: 5
+      }, 120);
 
       expect(result.starter).toBe(50);
       expect(result.flour).toBe(100);
