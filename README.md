@@ -123,3 +123,51 @@ const prefermentFormula = PrefermentStageBuilder.start()
   prefermentedAmount: 1
 }
 ```
+
+### Preferment stage calculation functions
+
+This is a set of functions to get different information about your preferment composition based on `PrefermentFormula`.
+
+#### `translatePrefermentPercentages(formula: PrefermentFormula): PrefermentFormula`
+
+Translates `PrefermentFormula` specified in percentages (75%) into the same formula using decimal ratios (0.75).
+It only affects hydration values.
+
+```typescript
+const prefermentFormula = translatePrefermentPercentages({
+  starterHydration: 150,
+  outputHydration: 100,
+  flourRatio: 2,
+  prefermentedAmount: 1
+});
+
+// Output
+{
+  starterHydration: 1.5,
+  outputHydration: 1,
+  flourRatio: 2,
+  prefermentedAmount: 1
+}
+```
+
+#### `translatePrefermentRatios(formula: PrefermentFormula): PrefermentFormula`
+
+Translates `PrefermentFormula` specified in decimal ratios (0.75) into the same formula using percentages (75%).
+It is a reverse logic of `translatePrefermentPercentages()` function.
+
+```typescript
+const prefermentFormula = translatePrefermentRatios({
+  starterHydration: 1.5,
+  outputHydration: 1,
+  flourRatio: 2,
+  prefermentedAmount: 1
+});
+
+// Output
+{
+  starterHydration: 150,
+  outputHydration: 100,
+  flourRatio: 2,
+  prefermentedAmount: 1
+}
+```
