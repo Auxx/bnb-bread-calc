@@ -70,7 +70,7 @@ describe('ppreferment-stage.ts', () => {
 
   describe('calculatePrefermentComposition', () => {
     function expectations(formula: PrefermentFormula, prefermentedAmount) {
-      const result = calculatePrefermentComposition(formula);
+      const result = calculatePrefermentComposition(formula, prefermentedAmount);
 
       expect(result.totalFlour).toBe(prefermentedAmount);
       expect(result.totalHydration).toBe(formula.outputHydration * prefermentedAmount);
@@ -80,9 +80,9 @@ describe('ppreferment-stage.ts', () => {
     }
 
     it('should calculate preferment composition', () => {
-      expectations({ starterHydration: 1, outputHydration: 1, flourRatio: 4, prefermentedAmount: 1 }, 1);
-      expectations({ starterHydration: 1.5, outputHydration: 1, flourRatio: 9, prefermentedAmount: 1 }, 1);
-      expectations({ starterHydration: 1.5, outputHydration: 1, flourRatio: 9, prefermentedAmount: 0.5 }, 0.5);
+      expectations({ starterHydration: 1, outputHydration: 1, flourRatio: 4 }, 1);
+      expectations({ starterHydration: 1.5, outputHydration: 1, flourRatio: 9 }, 1);
+      expectations({ starterHydration: 1.5, outputHydration: 1, flourRatio: 9 }, 0.5);
     });
   });
 });

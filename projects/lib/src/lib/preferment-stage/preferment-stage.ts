@@ -36,7 +36,7 @@ export function calculatePrefermentWeightsForFlour(formula: PrefermentFormula, r
   return calculatePrefermentWeights(formula, requiredWeight + (requiredWeight * formula.outputHydration));
 }
 
-export function calculatePrefermentComposition(formula: PrefermentFormula): PrefermentComposition {
+export function calculatePrefermentComposition(formula: PrefermentFormula, prefermentedAmount: number): PrefermentComposition {
   const ratios = calculatePrefermentWeights(formula, 1);
 
   const starterTotal = 1 + formula.starterHydration;
@@ -47,14 +47,14 @@ export function calculatePrefermentComposition(formula: PrefermentFormula): Pref
   const totalFlour = freshFlour + starterFlour;
 
   return {
-    totalFlour: 1 * formula.prefermentedAmount,
-    totalHydration: formula.outputHydration * formula.prefermentedAmount,
+    totalFlour: 1 * prefermentedAmount,
+    totalHydration: formula.outputHydration * prefermentedAmount,
 
-    starterFlour: (starterFlour / totalFlour) * formula.prefermentedAmount,
-    starterHydration: (starterHydration / totalFlour) * formula.prefermentedAmount,
+    starterFlour: (starterFlour / totalFlour) * prefermentedAmount,
+    starterHydration: (starterHydration / totalFlour) * prefermentedAmount,
 
-    freshFlour: (freshFlour / totalFlour) * formula.prefermentedAmount,
-    freshHydration: (formula.outputHydration - starterHydration / totalFlour) * formula.prefermentedAmount,
+    freshFlour: (freshFlour / totalFlour) * prefermentedAmount,
+    freshHydration: (formula.outputHydration - starterHydration / totalFlour) * prefermentedAmount,
 
     flour: formula.flour
   };

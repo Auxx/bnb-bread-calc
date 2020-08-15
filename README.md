@@ -25,7 +25,6 @@ export interface PrefermentFormula {
   outputHydration: number;
   flourRatio: number;
   
-  prefermentedAmount?: number;
   flour?: string;
 }
 ```
@@ -98,10 +97,6 @@ more fresh flour than is available in the starter.
 
 Sets the name/ID of flour used in preferment. If starter and fresh flour are different, use fresh flour name/ID.
 
-#### `prefermentedAmount(value: number): PrefermentStageBuilder`
-
-Sets the amount of flour that should be prefermented in decimal number without unit.
-
 #### `build(): PrefermentFormula`
 
 Returns `PrefermentFormula` based on specified values.
@@ -119,8 +114,7 @@ const prefermentFormula = PrefermentStageBuilder.start()
 {
   starterHydration: 1.5,
   outputHydration: 1,
-  flourRatio: 9,
-  prefermentedAmount: 1
+  flourRatio: 9
 }
 ```
 

@@ -3,8 +3,6 @@ export interface PrefermentFormula {
   outputHydration: number;
   flourRatio: number;
 
-  // TODO Move it outside of model
-  prefermentedAmount?: number;
   flour?: string;
 }
 
