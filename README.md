@@ -186,3 +186,22 @@ const result = calculatePrefermentWeightsForFlour({ starterHydration: 1, outputH
   water: 30
 }
 ```
+
+#### `calculatePrefermentComposition(formula: PrefermentFormula, prefermentedAmount: number): PrefermentComposition`
+
+Creates detailed preferment composition report based on `PrefermentFormula` and
+the amount of flour that needs be prefermented as specified by `prefermentedAmount`.
+
+```typescript
+const result = calculatePrefermentComposition({ starterHydration: 1, outputHydration: 1, flourRatio: 4 }, 1);
+
+// Output
+{
+  totalFlour: 1,
+  totalHydration: 1,
+  starterFlour: 0.2,
+  starterHydration: 0.2,
+  freshFlour: 0.8,
+  freshHydration: 0.8
+}
+```
