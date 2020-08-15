@@ -134,11 +134,7 @@ Translates `PrefermentFormula` specified in percentages (75%) into the same form
 It only affects hydration values.
 
 ```typescript
-const prefermentFormula = translatePrefermentPercentages({
-  starterHydration: 150,
-  outputHydration: 100,
-  flourRatio: 2
-});
+const prefermentFormula = translatePrefermentPercentages({ starterHydration: 150, outputHydration: 100, flourRatio: 2 });
 
 // Output
 {
@@ -154,16 +150,30 @@ Translates `PrefermentFormula` specified in decimal ratios (0.75) into the same 
 It is a reverse logic of `translatePrefermentPercentages()` function.
 
 ```typescript
-const prefermentFormula = translatePrefermentRatios({
-  starterHydration: 1.5,
-  outputHydration: 1,
-  flourRatio: 2
-});
+const prefermentFormula = translatePrefermentRatios({ starterHydration: 1.5, outputHydration: 1, flourRatio: 2 });
 
 // Output
 {
   starterHydration: 150,
   outputHydration: 100,
   flourRatio: 2
+}
+```
+
+#### `calculatePrefermentWeights(formula: PrefermentFormula, requiredWeight: number): PrefermentWeights`
+
+Calculates weight of ingredients to create a required preferment based on total preferment weight needed.
+This is helpful when bulking up sourdough starter, creating levain or converting between different
+hydration levels.
+
+```typescript
+const result = calculatePrefermentWeights({ starterHydration: 1, outputHydration: 1, flourRatio: 4 }, 90);
+
+// Output
+
+{
+  starter: 18,
+  flour: 36,
+  water: 36
 }
 ```
