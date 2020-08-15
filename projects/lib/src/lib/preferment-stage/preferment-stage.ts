@@ -59,3 +59,8 @@ export function calculatePrefermentComposition(formula: PrefermentFormula): Pref
     flour: formula.flour
   };
 }
+
+// TODO WIP
+export function prefermentToSimpleStage() {
+
+}

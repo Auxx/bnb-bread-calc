@@ -24,8 +24,8 @@ export interface PrefermentFormula {
   starterHydration: number;
   outputHydration: number;
   flourRatio: number;
-  prefermentedAmount: number;
-
+  
+  prefermentedAmount?: number;
   flour?: string;
 }
 ```
@@ -137,16 +137,14 @@ It only affects hydration values.
 const prefermentFormula = translatePrefermentPercentages({
   starterHydration: 150,
   outputHydration: 100,
-  flourRatio: 2,
-  prefermentedAmount: 1
+  flourRatio: 2
 });
 
 // Output
 {
   starterHydration: 1.5,
   outputHydration: 1,
-  flourRatio: 2,
-  prefermentedAmount: 1
+  flourRatio: 2
 }
 ```
 
@@ -159,15 +157,13 @@ It is a reverse logic of `translatePrefermentPercentages()` function.
 const prefermentFormula = translatePrefermentRatios({
   starterHydration: 1.5,
   outputHydration: 1,
-  flourRatio: 2,
-  prefermentedAmount: 1
+  flourRatio: 2
 });
 
 // Output
 {
   starterHydration: 150,
   outputHydration: 100,
-  flourRatio: 2,
-  prefermentedAmount: 1
+  flourRatio: 2
 }
 ```
