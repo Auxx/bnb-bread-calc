@@ -11,6 +11,7 @@ export interface PrefermentStageElement {
   type: 'preferment';
   id: string;
   stage: PrefermentFormula;
+  convertedStage: SimpleStageFormula;
   prefermentedAmount: number;
 }
 
