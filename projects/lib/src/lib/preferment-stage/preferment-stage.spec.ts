@@ -2,12 +2,13 @@ import {
   calculatePrefermentComposition,
   calculatePrefermentWeights,
   calculatePrefermentWeightsForFlour,
+  prefermentToSimpleStage,
   translatePrefermentPercentages,
   translatePrefermentRatios
 } from './preferment-stage';
 import { PrefermentFormula } from './preferment-stage.types';
 
-describe('ppreferment-stage.ts', () => {
+describe('preferment-stage.ts', () => {
   describe('translatePrefermentPercentages', () => {
     it('should translate percentage values to ratios', () => {
       const result = translatePrefermentPercentages({ starterHydration: 125, outputHydration: 80, flourRatio: 9 });
@@ -83,6 +84,19 @@ describe('ppreferment-stage.ts', () => {
       expectations({ starterHydration: 1, outputHydration: 1, flourRatio: 4 }, 1);
       expectations({ starterHydration: 1.5, outputHydration: 1, flourRatio: 9 }, 1);
       expectations({ starterHydration: 1.5, outputHydration: 1, flourRatio: 9 }, 0.5);
+    });
+  });
+
+  describe('prefermentToSimpleStage', () => {
+    it('should convert preferment stage into simple stage', () => {
+      const result = prefermentToSimpleStage({ starterHydration: 1.5, outputHydration: 0.6, flourRatio: 4 }, 0.5);
+
+      expect(result.flour.length).toBe(1);
+      expect(result.hydration.length).toBe(1);
+      expect(result.other.length).toBe(0);
+
+      expect(result.flour[ 0 ].ratio).toBe(0.5);
+      expect(result.hydration[ 0 ].ratio).toBe(0.3);
     });
   });
 });

@@ -1,4 +1,6 @@
 import { PrefermentComposition, PrefermentFormula, PrefermentWeights } from './preferment-stage.types';
+import { SimpleStageFormula } from '../simple-stage/simple-stage.types';
+import { SimpleStageBuilder } from '../simple-stage/simple-stage-builder';
 
 export function translatePrefermentPercentages(formula: PrefermentFormula): PrefermentFormula {
   return {
@@ -47,7 +49,7 @@ export function calculatePrefermentComposition(formula: PrefermentFormula, prefe
   const totalFlour = freshFlour + starterFlour;
 
   return {
-    totalFlour: 1 * prefermentedAmount,
+    totalFlour: prefermentedAmount,
     totalHydration: formula.outputHydration * prefermentedAmount,
 
     starterFlour: (starterFlour / totalFlour) * prefermentedAmount,
@@ -60,7 +62,11 @@ export function calculatePrefermentComposition(formula: PrefermentFormula, prefe
   };
 }
 
-// TODO WIP
-export function prefermentToSimpleStage() {
+export function prefermentToSimpleStage(formula: PrefermentFormula, prefermentedAmount: number): SimpleStageFormula {
+  const composition = calculatePrefermentComposition(formula, prefermentedAmount);
 
+  return SimpleStageBuilder.start()
+    .flour(composition.flour, composition.totalFlour)
+    .hydration('water', composition.totalHydration)
+    .build();
 }
