@@ -1,13 +1,13 @@
 import { SimpleStageFormula } from '../simple-stage/simple-stage.types';
 import { PrefermentFormula } from '../preferment-stage/preferment-stage.types';
 
-export interface SimpleStageElement {
+export interface SimpleStageRecipeElement {
   type: 'simple';
   id: string;
   stage: SimpleStageFormula;
 }
 
-export interface PrefermentStageElement {
+export interface PrefermentStageRecipeElement {
   type: 'preferment';
   id: string;
   stage: PrefermentFormula;
@@ -15,4 +15,4 @@ export interface PrefermentStageElement {
   prefermentedAmount: number;
 }
 
-export type RecipeElement = SimpleStageElement | PrefermentStageElement;
+export type RecipeElement = SimpleStageRecipeElement | PrefermentStageRecipeElement;
