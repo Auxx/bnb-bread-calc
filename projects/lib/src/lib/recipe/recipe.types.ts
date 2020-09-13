@@ -16,3 +16,12 @@ export interface PrefermentStageRecipeElement {
 }
 
 export type RecipeElement = SimpleStageRecipeElement | PrefermentStageRecipeElement;
+
+export interface RecipeIngredient {
+  id: string;
+  ratio: number;
+}
+
+export type Recipe = RecipeElement[];
+
+export type OverallFormula = RecipeIngredient[];

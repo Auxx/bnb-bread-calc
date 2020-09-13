@@ -1,10 +1,10 @@
-import { RecipeElement } from './recipe.types';
+import { Recipe } from './recipe.types';
 import { SimpleStageFormula } from '../simple-stage/simple-stage.types';
 import { PrefermentFormula } from '../preferment-stage/preferment-stage.types';
 import { prefermentToSimpleStage } from '../preferment-stage/preferment-stage';
 
 export class RecipeBuilder {
-  private readonly stageList: RecipeElement[] = [];
+  private readonly stageList: Recipe = [];
 
   static start() {
     return new RecipeBuilder();
@@ -26,7 +26,7 @@ export class RecipeBuilder {
     return this;
   }
 
-  build(): RecipeElement[] {
+  build(): Recipe {
     return this.stageList;
   }
 }
