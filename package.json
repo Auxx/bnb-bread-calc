@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build lib",
+    "build": "ng build lib --prod",
     "test": "ng test --browsers=ChromeHeadless --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
