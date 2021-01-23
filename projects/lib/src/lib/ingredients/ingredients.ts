@@ -11,10 +11,14 @@ export enum IngredientType {
   flour = 'flour',
   hydration = 'hydration',
   other = 'other',
+  stage = 'stage',
   combined = 'combined' // TODO Add support
 }
 
-export const ingredients: Ingredient[] = [
+export const baseIngredients: Ingredient[] = [
+  // Stage ingredient, allows to add dough development stages as ingredients
+  { id: 'stage', type: IngredientType.stage },
+
   // Wheat flour
   { id: 'W405', type: IngredientType.flour, name: 'Pastry flour', meta: 'Wheat' },
   { id: 'W550', type: IngredientType.flour, name: 'Plain flour', meta: 'Wheat' },
