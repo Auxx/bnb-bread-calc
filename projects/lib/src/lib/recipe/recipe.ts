@@ -4,13 +4,15 @@ import { SimpleStageBuilderOptions, SimpleStageElement, SimpleStageFormula } fro
 import { PrefermentStageBuilder } from '../preferment-stage/preferment-stage-builder';
 import { baseIngredients, Ingredient, IngredientType } from '../ingredients/ingredients';
 import { SimpleStageBuilder } from '../simple-stage/simple-stage-builder';
-import { ProcessedRecipe } from './recipe.types';
+import { ProcessedRecipe, SourceFormula } from './recipe.types';
+import { PrefermentFormula } from '../preferment-stage/preferment-stage.types';
 
 export function calculateRecipeWeights(recipe: ParsedRecipe,
                                        weight: number,
                                        weightIsTotal = false,
                                        ingredients = baseIngredients): ProcessedRecipe {
-  const processedStages = prepareParsedRecipe(recipe, ingredients);
+  const sourceFormulas = prepareFormulas(recipe, ingredients);
+  const processedStages = prepareParsedRecipe(sourceFormulas, ingredients);
   const totalRatios = aggregateIngredientRatios(processedStages);
   const totalPercentage = totalRatios.flour + totalRatios.hydration + totalRatios.other;
   const totalWeight = weightIsTotal ? weight : weight / totalRatios.flour * totalPercentage;
@@ -19,6 +21,7 @@ export function calculateRecipeWeights(recipe: ParsedRecipe,
     totalPercentage,
     totalWeight,
     totalRatios,
+    sourceFormulas,
     stages: calculateRatiosToWeight(processedStages, totalPercentage, totalWeight),
     totalWeights: {
       flour: totalRatios.flour * totalWeight / totalPercentage,
@@ -28,10 +31,16 @@ export function calculateRecipeWeights(recipe: ParsedRecipe,
   };
 }
 
-export function prepareParsedRecipe(recipe: ParsedRecipe, ingredients = baseIngredients) {
+export function prepareFormulas(recipe: ParsedRecipe, ingredients = baseIngredients) {
   return Object.keys(recipe)
     .map(key => recipe[key])
-    .map(stage => getSimpleStage(stage, ingredients))
+    .map(stage => getFormula(stage, ingredients))
+    .filter(stage => stage !== null);
+}
+
+export function prepareParsedRecipe(recipe: SourceFormula[], ingredients = baseIngredients) {
+  return recipe
+    .map(formula => getSimpleStage(formula, ingredients))
     .filter(stage => stage !== null);
 }
 
@@ -124,30 +133,49 @@ function getTotalIngredientRatio(item: SimpleStageElement,
   return item.ratio;
 }
 
-function getSimpleStage(stage: PartialParsedStage, ingredients: Ingredient[]): SimpleStageFormula {
+function getFormula(stage: PartialParsedStage, ingredients: Ingredient[]): SourceFormula {
   switch (stage.type) {
     case 'preferment':
-      return fromPrefermentStage(stage);
+      return {
+        type: 'preferment',
+        id: stage.id,
+        prefermented: getNumber(stage.data.prefermented[0]),
+        source: fromPrefermentStage(stage)
+      };
 
     case 'simple':
-      return fromSimpleStage(stage, ingredients);
+      return {
+        type: 'simple',
+        id: stage.id,
+        source: fromSimpleStage(stage, ingredients)
+      };
 
     default:
       return null;
   }
 }
 
-function fromPrefermentStage(stage: PartialParsedStage): SimpleStageFormula {
-  return prefermentToSimpleStage(
-    PrefermentStageBuilder
-      .start()
-      .flour(getString(stage.data.flourType[0]))
-      .starterHydration(getNumber(stage.data.starterHydration[0]))
-      .outputHydration(getNumber(stage.data.outputHydration[0]))
-      .flourRatio(getNumber(stage.data.flourRatio[0]))
-      .build(),
-    getNumber(stage.data.prefermented[0]),
-    stage.id);
+function getSimpleStage(formula: SourceFormula, ingredients: Ingredient[]): SimpleStageFormula {
+  switch (formula.type) {
+    case 'preferment':
+      return prefermentToSimpleStage(formula.source, formula.prefermented, formula.id);
+
+    case 'simple':
+      return formula.source;
+
+    default:
+      return null;
+  }
+}
+
+function fromPrefermentStage(stage: PartialParsedStage): PrefermentFormula {
+  return PrefermentStageBuilder
+    .start()
+    .flour(getString(stage.data.flourType[0]))
+    .starterHydration(getNumber(stage.data.starterHydration[0]))
+    .outputHydration(getNumber(stage.data.outputHydration[0]))
+    .flourRatio(getNumber(stage.data.flourRatio[0]))
+    .build();
 }
 
 function fromSimpleStage(stage: PartialParsedStage, ingredients: Ingredient[]): SimpleStageFormula {

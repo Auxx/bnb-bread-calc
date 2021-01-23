@@ -15,5 +15,7 @@ export * from './lib/simple-stage/simple-stage';
 export * from './lib/simple-stage/simple-stage-builder';
 export * from './lib/simple-stage/simple-stage.types';
 
-export * from './lib/recipe/recipe-builder';
+export * from './lib/recipe/recipe';
 export * from './lib/recipe/recipe.types';
+
+export * from './lib/printers/terminal-printer';
