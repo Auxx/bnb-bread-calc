@@ -6,7 +6,9 @@ describe('recipe.ts', () => {
   describe('calculateRecipeWeights', () => {
     it('should work', () => {
       const recipe = parseInlineRecipe(simpleWheatFormula);
-      calculateRecipeWeights(recipe, 650, true);
+      const result = calculateRecipeWeights(recipe, 650, true);
+
+      console.log(JSON.stringify(result, null, 2));
     });
   });
 });

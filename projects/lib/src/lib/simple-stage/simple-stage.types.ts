@@ -3,6 +3,7 @@ export interface SimpleStageElement {
   ratio: number;
 
   subtractFrom?: string;
+  totalWeight?: number;
 }
 
 export interface SimpleStageFormula {
@@ -12,6 +13,7 @@ export interface SimpleStageFormula {
   stages: SimpleStageElement[];
 
   id?: string;
+  totalWeight?: number;
 }
 
 export interface SimpleStageComposition {

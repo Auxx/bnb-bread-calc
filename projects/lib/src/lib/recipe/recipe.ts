@@ -1,42 +1,31 @@
-import { OverallFormula, Recipe } from './recipe.types';
 import { ParsedRecipe, ParsedStageValue, PartialParsedStage } from '../inline-parser/inline-parser.types';
 import { prefermentToSimpleStage } from '../preferment-stage/preferment-stage';
 import { SimpleStageBuilderOptions, SimpleStageElement, SimpleStageFormula } from '../simple-stage/simple-stage.types';
 import { PrefermentStageBuilder } from '../preferment-stage/preferment-stage-builder';
 import { baseIngredients, Ingredient, IngredientType } from '../ingredients/ingredients';
 import { SimpleStageBuilder } from '../simple-stage/simple-stage-builder';
+import { ProcessedRecipe } from './recipe.types';
 
-interface IngredientMap {
-  [key: string]: number;
-}
-
-export function calculateOverallFormula(recipe: Recipe): OverallFormula {
-  const flour: IngredientMap = {};
-  const hydration: IngredientMap = {};
-  const other: IngredientMap = {};
-
-  recipe.forEach(stage => {
-    const formula = stage.type === 'preferment' ? stage.convertedStage : stage.stage;
-
-    formula.flour.forEach(ingredient => {
-      if (!flour.hasOwnProperty(ingredient.id)) {
-        flour[ingredient.id] = 0;
-      }
-
-      flour[ingredient.id] += ingredient.ratio;
-    });
-  });
-
-  return [];
-}
-
-export function calculateRecipeWeights(recipe: ParsedRecipe, weight: number, weightIsTotal = false, ingredients = baseIngredients) {
+export function calculateRecipeWeights(recipe: ParsedRecipe,
+                                       weight: number,
+                                       weightIsTotal = false,
+                                       ingredients = baseIngredients): ProcessedRecipe {
   const processedStages = prepareParsedRecipe(recipe, ingredients);
   const totalRatios = aggregateIngredientRatios(processedStages);
   const totalPercentage = totalRatios.flour + totalRatios.hydration + totalRatios.other;
   const totalWeight = weightIsTotal ? weight : weight / totalRatios.flour * totalPercentage;
 
-  console.log('totalWeight', totalWeight);
+  return {
+    totalPercentage,
+    totalWeight,
+    totalRatios,
+    stages: calculateRatiosToWeight(processedStages, totalPercentage, totalWeight),
+    totalWeights: {
+      flour: totalRatios.flour * totalWeight / totalPercentage,
+      hydration: totalRatios.hydration * totalWeight / totalPercentage,
+      other: totalRatios.other * totalWeight / totalPercentage
+    }
+  };
 }
 
 export function prepareParsedRecipe(recipe: ParsedRecipe, ingredients = baseIngredients) {
@@ -46,8 +35,64 @@ export function prepareParsedRecipe(recipe: ParsedRecipe, ingredients = baseIngr
     .filter(stage => stage !== null);
 }
 
+export function mapRatiosToWeight(item: SimpleStageElement,
+                                  stageMap: { [key: string]: SimpleStageFormula },
+                                  searchIn: 'flour' | 'hydration' | 'other',
+                                  totalWeight: number,
+                                  totalPercentage: number): SimpleStageElement {
+  return {
+    ...item,
+    totalWeight: getTotalIngredientRatio(item, stageMap, searchIn) * totalWeight / totalPercentage
+  };
+}
+
+export function calculateRatiosToWeight(stages: SimpleStageFormula[], totalPercentage: number, totalWeight: number): SimpleStageFormula[] {
+  const originalMap = stageListToMap(stages);
+
+  const preprocessed = stages.map(stage => {
+    const temp: SimpleStageFormula = {
+      id: stage.id,
+      flour: stage.flour.map(item => mapRatiosToWeight(item, originalMap, 'flour', totalWeight, totalPercentage)),
+      hydration: stage.hydration.map(item => mapRatiosToWeight(item, originalMap, 'hydration', totalWeight, totalPercentage)),
+      other: stage.other.map(item => mapRatiosToWeight(item, originalMap, 'other', totalWeight, totalPercentage)),
+      stages: stage.stages
+    };
+
+    return {
+      ...temp,
+      totalWeight: getStageTotalWeight(temp)
+    };
+  });
+
+  const processedMap = stageListToMap(preprocessed);
+
+  return preprocessed.map(stage => {
+    const childStages = stage.stages.map(child =>
+      ({
+        ...child,
+        totalWeight: processedMap[child.id].totalWeight * child.ratio
+      } as SimpleStageElement));
+
+    return {
+      ...stage,
+      stages: childStages,
+      totalWeight: stage.totalWeight + childStages.reduce((total, item) => total + item.totalWeight, 0)
+    } as SimpleStageFormula;
+  });
+}
+
+export function getStageTotalWeight(stage: SimpleStageFormula) {
+  return stage.flour.reduce((total, item) => total + item.totalWeight, 0) +
+    stage.hydration.reduce((total, item) => total + item.totalWeight, 0) +
+    stage.other.reduce((total, item) => total + item.totalWeight, 0);
+}
+
+export function stageListToMap(stages: SimpleStageFormula[]) {
+  return stages.reduce((acc, stage) => ({ ...acc, [stage.id]: stage }), {});
+}
+
 function aggregateIngredientRatios(stages: SimpleStageFormula[]) {
-  const stageMap = stages.reduce((acc, stage) => ({ ...acc, [stage.id]: stage }), {});
+  const stageMap = stageListToMap(stages);
 
   return stages.reduce(
     (acc, stage) => {
