@@ -48,7 +48,7 @@ export class SimpleStageBuilder {
     const existing = list.find(i => i.id === id);
 
     if (existing === undefined) {
-      list.push({ id, ratio });
+      list.push({ id, ratio, subtractFrom: options.subtractFrom });
     } else {
       existing.ratio = options.combineWithExisting ? existing.ratio + ratio : ratio;
     }
