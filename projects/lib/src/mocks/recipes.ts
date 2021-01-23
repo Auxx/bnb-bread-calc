@@ -18,3 +18,20 @@ export const sourRyeFormula = `
   stage:sourdough
   salt:2%
   `;
+
+export const simpleWheatFormula = `
+  type:preferment
+  id:sourdough
+  flourType:W700
+  prefermented:40%
+  flourRatio:7
+  starterHydration:100%
+  outputHydration:80%
+  ---
+  type:simple
+  id:dough:Final dough
+  W700:100%:sourdough
+  water:65%:sourdough
+  stage:sourdough
+  salt:2%
+`;
