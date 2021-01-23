@@ -62,10 +62,11 @@ export function calculatePrefermentComposition(formula: PrefermentFormula, prefe
   };
 }
 
-export function prefermentToSimpleStage(formula: PrefermentFormula, prefermentedAmount: number): SimpleStageFormula {
+export function prefermentToSimpleStage(formula: PrefermentFormula, prefermentedAmount: number, id?: string): SimpleStageFormula {
   const composition = calculatePrefermentComposition(formula, prefermentedAmount);
 
   return SimpleStageBuilder.start()
+    .id(id)
     .flour(composition.flour, composition.totalFlour)
     .hydration('water', composition.totalHydration)
     .build();

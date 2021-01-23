@@ -11,6 +11,8 @@ export class SimpleStageBuilder {
 
   private readonly stageList: SimpleStageElement[] = [];
 
+  private stageId: string;
+
   static start() {
     return new SimpleStageBuilder();
   }
@@ -35,8 +37,14 @@ export class SimpleStageBuilder {
     return this;
   }
 
+  id(id: string) {
+    this.stageId = id;
+    return this;
+  }
+
   build(): SimpleStageFormula {
     return {
+      id: this.stageId,
       flour: this.flourList.map(i => ({ ...i })),
       hydration: this.hydrationList.map(i => ({ ...i })),
       other: this.otherList.map(i => ({ ...i })),

@@ -10,6 +10,8 @@ export interface SimpleStageFormula {
   hydration: SimpleStageElement[];
   other: SimpleStageElement[];
   stages: SimpleStageElement[];
+
+  id?: string;
 }
 
 export interface SimpleStageComposition {

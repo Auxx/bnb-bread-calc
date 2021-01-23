@@ -1,12 +1,12 @@
 import { calculateRecipeWeights } from './recipe';
 import { parseInlineRecipe } from '../inline-parser/inline-parser';
-import { sourRyeFormula } from '../../mocks/recipes';
+import { simpleWheatFormula } from '../../mocks/recipes';
 
 describe('recipe.ts', () => {
   describe('calculateRecipeWeights', () => {
     it('should work', () => {
-      const recipe = parseInlineRecipe(sourRyeFormula);
-      calculateRecipeWeights(recipe, 1000);
+      const recipe = parseInlineRecipe(simpleWheatFormula);
+      calculateRecipeWeights(recipe, 650, true);
     });
   });
 });

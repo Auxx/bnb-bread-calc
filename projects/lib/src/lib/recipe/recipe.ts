@@ -1,7 +1,7 @@
 import { OverallFormula, Recipe } from './recipe.types';
 import { ParsedRecipe, ParsedStageValue, PartialParsedStage } from '../inline-parser/inline-parser.types';
 import { prefermentToSimpleStage } from '../preferment-stage/preferment-stage';
-import { SimpleStageBuilderOptions, SimpleStageFormula } from '../simple-stage/simple-stage.types';
+import { SimpleStageBuilderOptions, SimpleStageElement, SimpleStageFormula } from '../simple-stage/simple-stage.types';
 import { PrefermentStageBuilder } from '../preferment-stage/preferment-stage-builder';
 import { baseIngredients, Ingredient, IngredientType } from '../ingredients/ingredients';
 import { SimpleStageBuilder } from '../simple-stage/simple-stage-builder';
@@ -30,12 +30,53 @@ export function calculateOverallFormula(recipe: Recipe): OverallFormula {
   return [];
 }
 
-export function calculateRecipeWeights(recipe: ParsedRecipe, flourWeight: number, ingredients = baseIngredients) {
-  Object.keys(recipe)
+export function calculateRecipeWeights(recipe: ParsedRecipe, weight: number, weightIsTotal = false, ingredients = baseIngredients) {
+  const processedStages = prepareParsedRecipe(recipe, ingredients);
+  const totalRatios = aggregateIngredientRatios(processedStages);
+  const totalPercentage = totalRatios.flour + totalRatios.hydration + totalRatios.other;
+  const totalWeight = weightIsTotal ? weight : weight / totalRatios.flour * totalPercentage;
+
+  console.log('totalWeight', totalWeight);
+}
+
+export function prepareParsedRecipe(recipe: ParsedRecipe, ingredients = baseIngredients) {
+  return Object.keys(recipe)
     .map(key => recipe[key])
     .map(stage => getSimpleStage(stage, ingredients))
-    .filter(stage => stage !== null)
-    .forEach(stage => console.log(JSON.stringify(stage, null, 2)));
+    .filter(stage => stage !== null);
+}
+
+function aggregateIngredientRatios(stages: SimpleStageFormula[]) {
+  const stageMap = stages.reduce((acc, stage) => ({ ...acc, [stage.id]: stage }), {});
+
+  return stages.reduce(
+    (acc, stage) => {
+      acc.flour = stage.flour.reduce((total, item) => total + getTotalIngredientRatio(item, stageMap, 'flour'), acc.flour);
+      acc.hydration = stage.hydration.reduce((total, item) => total + getTotalIngredientRatio(item, stageMap, 'hydration'), acc.hydration);
+      acc.other = stage.other.reduce((total, item) => total + getTotalIngredientRatio(item, stageMap, 'other'), acc.other);
+      return acc;
+    },
+    {
+      flour: 0,
+      hydration: 0,
+      other: 0
+    });
+}
+
+function getTotalIngredientRatio(item: SimpleStageElement,
+                                 stageMap: { [key: string]: SimpleStageFormula },
+                                 searchIn: 'flour' | 'hydration' | 'other') {
+  if (typeof item.subtractFrom === 'string') {
+    if (item.subtractFrom in stageMap) {
+      const relation = stageMap[item.subtractFrom][searchIn].find(i => i.id === item.id);
+
+      if (relation instanceof Object) {
+        return item.ratio - relation.ratio;
+      }
+    }
+  }
+
+  return item.ratio;
 }
 
 function getSimpleStage(stage: PartialParsedStage, ingredients: Ingredient[]): SimpleStageFormula {
@@ -60,11 +101,14 @@ function fromPrefermentStage(stage: PartialParsedStage): SimpleStageFormula {
       .outputHydration(getNumber(stage.data.outputHydration[0]))
       .flourRatio(getNumber(stage.data.flourRatio[0]))
       .build(),
-    getNumber(stage.data.prefermented[0]));
+    getNumber(stage.data.prefermented[0]),
+    stage.id);
 }
 
 function fromSimpleStage(stage: PartialParsedStage, ingredients: Ingredient[]): SimpleStageFormula {
-  const builder = SimpleStageBuilder.start();
+  const builder = SimpleStageBuilder
+    .start()
+    .id(stage.id);
 
   Object.keys(stage.data).forEach(key => mapStageIngredient(key, stage.data[key], ingredients, builder));
 
