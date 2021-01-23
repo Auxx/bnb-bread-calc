@@ -25,7 +25,7 @@ export function parseInlineRecipe(recipe: string): ParsedRecipe {
       lineParser,
       {} as ParsedRecipe);
 
-  log(stages);
+  delete stages[temporaryStageKey];
 
   return stages;
 }
@@ -117,6 +117,7 @@ function getPropertyValue(value: string): ParsedStageValue {
 
 function createStage(recipe: ParsedRecipe): ParsedRecipe {
   const stage = recipe[temporaryStageKey];
+  stage.order = Object.keys(recipe).length - 1;
 
   validateParsedStage(stage);
 

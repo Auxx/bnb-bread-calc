@@ -6,6 +6,7 @@ export interface ParsedStage {
   type: string;
   id: string;
   name: string;
+  order: number;
   data: { [key: string]: ParsedStageValue[] };
 }
 
