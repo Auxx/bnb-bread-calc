@@ -79,7 +79,7 @@ function setStageType(recipe: ParsedRecipe, args: string[]) {
     // TODO Add error handling
   }
 
-  recipe[temporaryStageKey].type = args[0];
+  recipe[temporaryStageKey].type = args[0] === 'preferment' || args[0] === 'simple' ? args[0] : 'unknown';
 }
 
 function setStageId(recipe: ParsedRecipe, args: string[]) {

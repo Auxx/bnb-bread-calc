@@ -3,7 +3,7 @@ export interface ParsedRecipe {
 }
 
 export interface ParsedStage {
-  type: string;
+  type: 'preferment' | 'simple' | 'unknown';
   id: string;
   name: string;
   order: number;
