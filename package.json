@@ -9,7 +9,8 @@
     "test": "ng test --browsers=ChromeHeadless --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "publish": "npm publish dist/lib"
+    "publish": "npm publish dist/lib",
+    "print": "node print.js"
   },
   "private": true,
   "dependencies": {
