@@ -82,11 +82,15 @@ export function calculateRatiosToWeight(stages: SimpleStageFormula[], totalPerce
         totalWeight: processedMap[child.id].totalWeight * child.ratio
       } as SimpleStageElement));
 
-    return {
+    const result: SimpleStageFormula = {
       ...stage,
       stages: childStages,
       totalWeight: stage.totalWeight + childStages.reduce((total, item) => total + item.totalWeight, 0)
-    } as SimpleStageFormula;
+    };
+
+    processedMap[result.id] = result;
+
+    return result;
   });
 }
 
