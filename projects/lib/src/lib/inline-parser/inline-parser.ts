@@ -96,7 +96,21 @@ function setStageProperty(recipe: ParsedRecipe, key: string, args: string[]) {
     recipe[temporaryStageKey].data = {};
   }
 
-  recipe[temporaryStageKey].data[key] = args.map(getPropertyValue);
+  if (key === 'stage') {
+    const value = args.map(getPropertyValue);
+
+    if (value.length < 2) {
+      value.push(1);
+    }
+
+    if (recipe[temporaryStageKey].data[key] === undefined) {
+      recipe[temporaryStageKey].data[key] = [];
+    }
+
+    recipe[temporaryStageKey].data[key] = recipe[temporaryStageKey].data[key].concat(value);
+  } else {
+    recipe[temporaryStageKey].data[key] = args.map(getPropertyValue);
+  }
 }
 
 function getPropertyValue(value: string): ParsedStageValue {

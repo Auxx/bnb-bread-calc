@@ -16,6 +16,10 @@ export function printToTerminal(recipe: ParsedRecipe | string,
     weightIsTotal,
     ingredients);
 
+  // return;
+
+  console.log(JSON.stringify(result, null, 2));
+
   console.log(`Composition`);
   console.log(`  Flour     : ${ result.totalWeights.flour.toFixed(2) } (${ (result.totalRatios.flour * 100).toFixed(2) }%)`);
   console.log(`  Hydration : ${ result.totalWeights.hydration.toFixed(2) } (${ (result.totalRatios.hydration * 100).toFixed(2) }%)`);
@@ -43,6 +47,7 @@ function printSimpleStage(stage: SimpleStageFormula) {
   stage.flour.forEach(item => console.log(`  ${ item.id.padEnd(20, ' ') } ${ item.totalWeight.toFixed(2).padStart(8) }`));
   stage.hydration.forEach(item => console.log(`  ${ item.id.padEnd(20, ' ') } ${ item.totalWeight.toFixed(2).padStart(8) }`));
   stage.other.forEach(item => console.log(`  ${ item.id.padEnd(20, ' ') } ${ item.totalWeight.toFixed(2).padStart(8) }`));
+  stage.stages.forEach(item => console.log(`  ${ item.id.padEnd(20, ' ') } ${ item.totalWeight.toFixed(2).padStart(8) }`));
   console.log(`  -----------------------------`);
   console.log(`  Total                ${ stage.totalWeight.toFixed(2).padStart(8) }`);
 }
