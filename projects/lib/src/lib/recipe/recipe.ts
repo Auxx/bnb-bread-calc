@@ -215,9 +215,20 @@ function mapStageIngredient(id: string, value: ParsedStageValue[], ingredients: 
       break;
 
     case IngredientType.stage:
-      builder.stage(getString(value[0]), getNumber(value[1], 1), { combineWithExisting: false });
+      processChildrenStageValues(value)
+        .forEach(v => builder.stage(getString(v[0]), getNumber(v[1], 1), { combineWithExisting: false }));
       break;
   }
+}
+
+function processChildrenStageValues(value: ParsedStageValue[]): ParsedStageValue[][] {
+  const result = [];
+
+  while (value.length) {
+    result.push(value.splice(0, 2));
+  }
+
+  return result;
 }
 
 function getNumber(value: ParsedStageValue, defaultValue = 0): number {
