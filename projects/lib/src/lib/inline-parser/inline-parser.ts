@@ -12,8 +12,6 @@ import {
   temporaryStageKey
 } from './inline-parser.types';
 
-const log = o => console.log(JSON.stringify(o, null, 2));
-
 export function parseInlineRecipe(recipe: string): ParsedRecipe {
   const lines = recipe
     .split(lineDelimiter)
