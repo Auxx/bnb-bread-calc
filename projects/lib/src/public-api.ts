@@ -18,4 +18,5 @@ export * from './lib/simple-stage/simple-stage.types';
 export * from './lib/recipe/recipe';
 export * from './lib/recipe/recipe.types';
 
+export * from './lib/printers/csv-printer';
 export * from './lib/printers/terminal-printer';

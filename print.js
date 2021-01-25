@@ -1,4 +1,4 @@
-const { printToTerminal, baseIngredients } = require('./dist/lib');
+const { printToTerminal, printToCsv, baseIngredients } = require('./dist/lib');
 
 const formula = `
   type:preferment
@@ -27,4 +27,5 @@ const formula = `
   salt:2%
 `;
 
-printToTerminal(formula, 800, true, baseIngredients);
+printToCsv(formula, 800, true, baseIngredients);
+// printToTerminal(formula, 800, true, baseIngredients);
