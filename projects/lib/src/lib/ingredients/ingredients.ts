@@ -65,5 +65,6 @@ export const baseIngredients: Ingredient[] = [
   { id: 'oil', type: IngredientType.other, name: 'Oil', meta: 'Any' },
   { id: 'veg-oil', type: IngredientType.other, name: 'Vegetable oil' },
   { id: 'olive-oil', type: IngredientType.other, name: 'Olive oil' },
-  { id: 'butter', type: IngredientType.other, name: 'Butter' }
+  { id: 'butter', type: IngredientType.other, name: 'Butter' },
+  { id: 'sugar', type: IngredientType.other, name: 'Sugar' }
 ];

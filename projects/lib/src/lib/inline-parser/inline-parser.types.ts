@@ -22,9 +22,9 @@ export const lineDelimiter = /\r?\n/;
 
 export const argumentDelimiter = ':';
 
-export const numericTest = /^\d+$/;
+export const numericTest = /^[\d.]+$/;
 
-export const percentageTest = /^\d+%$/;
+export const percentageTest = /^[\d.]+%$/;
 
 export const stageTypeKey = 'type';
 

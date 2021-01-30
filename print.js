@@ -27,5 +27,29 @@ const formula = `
   salt:2%
 `;
 
-printToCsv(formula, 800, true, baseIngredients);
-// printToTerminal(formula, 800, true, baseIngredients);
+const bunFormula = `
+  type:preferment
+  id:sourdough
+  flourType:W550
+  prefermented:50%
+  flourRatio:5
+  starterHydration:100%
+  outputHydration:70%
+  ---
+  type:simple
+  id:predough
+  stage:sourdough
+  W550:45%
+  water:15%
+  salt:1.5%
+  ---
+  type:simple
+  id:dough
+  stage:predough
+  W550:5%
+  butter:6%
+  sugar:15%
+`;
+
+printToCsv(bunFormula, 800, true, baseIngredients);
+// printToTerminal(bunFormula, 630, true, baseIngredients);
