@@ -1,7 +1,7 @@
 {
   "name": "bnb-bread-calc",
   "description": "TypeScript/JavaScript library to calculate baker's percentages",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "peerDependencies": {
   },
   "dependencies": {
